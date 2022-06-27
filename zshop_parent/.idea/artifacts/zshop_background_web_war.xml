@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="zshop_background_web:war">
+    <output-path>$PROJECT_DIR$/zshop_background_web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>false</exploded>
+        <module>zshop_background_web</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="archive" name="zshop_background_web-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="zshop_background_web:war exploded" />
+    </root>
+  </artifact>
+</component>

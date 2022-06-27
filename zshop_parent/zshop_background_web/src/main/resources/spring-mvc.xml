@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--扫描controller包,让该包下所有的类，支持contrller注解，表示该类被spring管理-->
+    <context:component-scan base-package="com.zte.zshop.controller"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!--将返回值以application/json;charset=utf-8格式写进response对象的body中-->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json;charset=utf-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--springmvc的视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/backend/"/>
+        <property name="suffix" value=".jsp"/>
+
+
+    </bean>
+    <!--默认静态资源交给servlet处理，不需要通过springmvc拦截-->
+    <mvc:default-servlet-handler/>
+
+    <!--直接访问的页面-->
+    <mvc:view-controller path="/showLogin" view-name="login"/>
+
+    <!--对WEB-INF下的资源文件进行映射-->
+    <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
+    <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"/>
+    <mvc:resources mapping="/layer/**" location="/WEB-INF/layer/"/>
+
+    <!--文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置最大上传字节数10M-->
+        <property name="maxUploadSize" value="10000000"/>
+        <!--默认字符集-->
+        <property name="defaultEncoding" value="utf-8"/>
+
+    </bean>
+
+</beans>

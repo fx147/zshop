@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.zshop.dao.SysuserDao">
+
+    <resultMap id="sysuserMap" type="sysuser">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="isValid" column="is_valid"/>
+        <result property="createDate" column="create_date"/>
+        <association property="role" javaType="Role">
+            <id property="id" column="r.id"/>
+            <result property="roleName" column="role_name"/>
+
+        </association>
+
+
+    </resultMap>
+    <resultMap id="sysuserMap2" type="sysuser">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="isValid" column="is_valid"/>
+        <result property="createDate" column="create_date"/>
+        <association property="role" javaType="Role">
+            <id property="id" column="role_id"/>
+
+        </association>
+
+
+    </resultMap>
+
+    <sql id="sysuesrColumn">
+        id,name,login_name,password,phone,email,is_valid,create_date,role_id
+    </sql>
+
+<!--
+    public List<Sysuser> selectAll();
+
+
+
+
+
+
+
+
+-->
+
+    <select id="selectAll" resultMap="sysuserMap">
+    SELECT
+      s.id,s.name,s.login_name,s.password,s.phone,s.email,s.is_valid,s.create_date,s.role_id,r.id 'r.id',r.role_name
+    FROM
+      t_sysuser s
+    LEFT JOIN t_role r
+    on s.role_id=r.id
+
+
+
+    </select>
+
+    <!--
+    public Sysuser selectById(int id);
+    -->
+    <select id="selectById" resultMap="sysuserMap2">
+    SELECT
+      <include refid="sysuesrColumn"/>
+    FROM
+      t_sysuser
+    WHERE
+      id=#{id}
+
+    </select>
+
+    <!--
+    public void insert(Sysuser sysuser);
+    -->
+    <insert id="insert" parameterType="sysuser">
+      insert into
+        t_sysuser
+      (name,login_name,password,phone,email,is_valid,create_date,role_id)
+      values
+      (#{name},#{loginName},#{password},#{phone},#{email},#{isValid},#{createDate},#{role.id})
+
+
+    </insert>
+
+    <!--
+    public void update(Sysuser sysuser);
+    -->
+    <update id="update" parameterType="sysuser">
+      update
+        t_sysuser
+      set
+        name=#{name},
+        phone=#{phone},
+        email=#{email},
+        role_id=#{role.id}
+      where
+        id=#{id}
+    </update>
+
+    <!--
+    public void updateStatus(@Param("id") int id, @Param("isValid") int isValid);
+    -->
+    <update id="updateStatus">
+        update
+          t_sysuser
+        set
+          is_valid=#{isValid}
+        where
+          id=#{id}
+    </update>
+
+    <!--
+    public Sysuser selectByName(String loginName);
+    -->
+    <select id="selectByName" resultType="sysuser">
+        select
+          name
+        from
+          t_sysuser
+        where
+          login_name=#{loginName}
+    </select>
+
+    <!--
+    public List<Sysuser> selectByParams(SysuserParams sysuserParams);
+    -->
+    <select id="selectByParams" parameterType="com.zte.zshop.params.SysuserParams" resultMap="sysuserMap">
+        SELECT
+          s.id,s.name,s.login_name,s.password,s.phone,s.email,s.is_valid,s.create_date,s.role_id,r.id 'r.id',r.role_name
+        FROM
+          t_sysuser s
+        LEFT JOIN t_role r
+        on s.role_id=r.id
+        <where>
+            <if test="name!=null and name!=''">
+                and name like CONCAT('%',CONCAT(#{name},'%'))
+            </if>
+
+            <if test="loginName!=null and loginName!=''">
+                and login_name like CONCAT('%',CONCAT(#{loginName},'%'))
+            </if>
+
+            <if test="phone!=null and phone!=''">
+                and phone=#{phone}
+            </if>
+
+            <if test="roleId!=null and roleId!=-1">
+                and role_id=#{roleId}
+            </if>
+
+            <if test="isValid!=null and isValid!=-1">
+                and is_valid=#{isValid}
+            </if>
+
+
+        </where>
+
+
+    </select>
+
+    <!--
+        public Sysuser selectByLoginNameAndPass(@Param("loginName") String loginName,@Param("password") String password, @Param("isValid") Integer isValid);
+
+    -->
+    <select id="selectByLoginNameAndPass" resultType="sysuser">
+    select
+      ID
+    from
+      t_sysuser
+    WHERE
+      login_name=#{loginName} and password=#{password} and is_valid=#{isValid}
+    </select>
+
+
+</mapper>

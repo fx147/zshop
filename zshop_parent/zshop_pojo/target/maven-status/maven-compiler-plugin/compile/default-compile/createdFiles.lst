@@ -1,0 +1,7 @@
+com\zte\zshop\entity\Order.class
+com\zte\zshop\entity\Role.class
+com\zte\zshop\entity\Sysuser.class
+com\zte\zshop\entity\Product.class
+com\zte\zshop\App.class
+com\zte\zshop\entity\Customer.class
+com\zte\zshop\entity\ProductType.class
